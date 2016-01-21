@@ -1,0 +1,46 @@
+<ion-view view-title="Cálculo Neto">
+  <ion-content>
+    <ion-list>
+
+      <ion-item class="item-divider">
+        Ingresos
+        <span class="item-note">{{ctrl.getAmount().grossAmount | currency : "S/ " : 2}}</span>
+      </ion-item>
+
+      <ion-item>
+        Sueldo Base
+        <span class="item-note positive item-note-lg">{{ctrl.getAmount().baseAmount | currency : "S/ " : 2}}</span>
+      </ion-item>
+
+      <ion-item ng-show="ctrl.profile.hasAF">
+        Asignación Familiar
+        <span class="item-note positive item-note-lg">{{ctrl.getAmount().AFAmount | currency : "S/ " : 2}}</span>
+      </ion-item>
+
+      <ion-item class="item-divider">
+        Descuentos
+        <span class="item-note">{{ctrl.getAmount().discountAmount | currency : "- S/ " : 2}}</span>
+      </ion-item>
+
+      <ion-item ng-show="ctrl.hasRetention">
+        Retención de 5ta
+        <span class="item-note assertive item-note-lg">{{ctrl.getAmount().retentionAmount | currency : "- S/ " : 2}}</span>
+      </ion-item>
+
+      <ion-item>
+        {{ctrl.pensions.current.name}}
+        <span class="item-note assertive item-note-lg">{{ctrl.getAmount().pensionAmount | currency : "- S/ " : 2}}</span>
+      </ion-item>
+
+      <ion-item ng-show="ctrl.profile.hasEPS">
+        Prima EPS
+        <span class="item-note assertive item-note-lg">{{ctrl.getAmount().EPSAmount | currency : "- S/ " : 2}}</span>
+      </ion-item>
+
+    </ion-list>
+  </ion-content>
+
+  <ion-footer-bar align-title="center" class="bar-balanced">
+    <h1 class="title">Sueldo Neto: <strong>{{ctrl.getAmount().netAmount | currency : "S/ " : 2}}</strong></h1>
+  </ion-footer-bar>
+</ion-view>

@@ -1,0 +1,41 @@
+<ion-view view-title="Perfil">
+  <ion-content>
+    <ion-list>
+
+      <ion-item class="item-input item-stacked-label">
+        Sueldo Base
+        <span class="item-note item-note-left">{{ctrl.getAmount().baseAmount | currency : "S/ " : 2}}</span>
+        <input class="positive" type="text" placeholder="Monto" ng-model="ctrl.getAmount().baseAmount" maxlength="15">
+      </ion-item>
+
+      <ion-item class="item-toggle">
+        Asignacion Familiar
+        <label class="toggle toggle-positive">
+          <input type="checkbox" ng-model="ctrl.profile.hasAF">
+          <div class="track">
+            <div class="handle"></div>
+          </div>
+        </label>
+      </ion-item>
+
+      <ion-item class="item-select">
+        Pensión
+        <select ng-options="pension.name for pension in ctrl.pensions.all track by pension.id" ng-model="ctrl.pensions.current">
+        </select>
+      </ion-item>
+
+      <ion-item class="item-input item-stacked-label item-toggle">
+        EPS
+        <span class="item-note item-note-left">{{ctrl.getAmount().EPSAmount | currency : "S/ " : 2}}</span>
+        <label class="toggle toggle-positive">
+          <input type="checkbox" ng-model="ctrl.profile.hasEPS">
+          <div class="track">
+            <div class="handle"></div>
+          </div>
+        </label>
+        <input class="positive" type="text" placeholder="Monto" ng-model="ctrl.getAmount().EPSAmount" ng-show="ctrl.profile.hasEPS" maxlength="15">
+      </ion-item>
+
+    </ion-list>
+  </ion-content>
+</ion-view>
