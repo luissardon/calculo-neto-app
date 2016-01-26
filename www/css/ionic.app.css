@@ -9731,8 +9731,10 @@ a.button {
   -webkit-transition-duration: 0s;
   transition-duration: 0s; }
 
-input[type="text"].positive {
+input[type="number"].positive, input[type="text"].positive {
   color: #387ef5; }
+  input[type="number"].positive.ng-invalid, input[type="text"].positive.ng-invalid {
+    color: #ef473a; }
 
 .item-stacked-label {
   padding: 16px; }
@@ -9758,5 +9760,55 @@ input[type="text"].positive {
 .item-select {
   padding-right: 161px; }
 
+.item-end {
+  border-bottom: none; }
+
+.item-list {
+  padding: 0;
+  padding-left: 16px;
+  border-bottom: none; }
+
 .list {
   margin-top: -1px; }
+
+.title {
+  line-height: 60px !important; }
+
+.no-padding {
+  padding: 0 !important; }
+
+.no-margin {
+  margin: 0 !important; }
+
+.button-full-large {
+  font-size: 18px !important; }
+
+.scroll-bar-indicator {
+  display: none; }
+
+.bar-footer {
+  height: 60px; }
+
+.has-footer {
+  bottom: 60px; }
+
+.calm-gray {
+  color: #666; }
+
+.margin-top {
+  margin-top: 8px; }
+
+.item-input input {
+  padding-left: 8px;
+  padding-right: 8px;
+  border-bottom: 1px solid; }
+
+.button.negative-v {
+  margin-bottom: -14px;
+  margin-top: -14px; }
+
+.button.margin-right {
+  margin-right: 8px; }
+
+.button.pull-right {
+  float: right; }

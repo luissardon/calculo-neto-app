@@ -14,7 +14,7 @@ $assertive:                       #ef473a !default;
 $royal:                           #886aea !default;
 $dark:                            #444 !default;
 */
-$positive:                        #387ef5 !default;
+$calmGray:						  #666 !default;
 
 // The path for our ionicons font files, relative to the built CSS in www/css
 $ionicons-font-path: "../lib/ionic/fonts" !default;
@@ -22,8 +22,12 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
 // Include all of Ionic
 @import "www/lib/ionic/scss/ionic";
 
-input[type="text"].positive {
+input[type="number"].positive, input[type="text"].positive {
   color: $positive;
+
+  &.ng-invalid {
+	color: $assertive;
+  }
 }
 
 .item-stacked-label {
@@ -58,6 +62,74 @@ input[type="text"].positive {
   padding-right: 161px;
 }
 
+.item-end {
+  border-bottom: none;
+}
+
+.item-list {
+  padding: 0;
+  padding-left: 16px;
+  border-bottom: none;
+}
+
 .list {
   margin-top: -1px;
+}
+
+.title {
+  line-height: 60px !important;
+}
+
+.no-padding {
+  padding: 0 !important;
+}
+
+.no-margin {
+  margin: 0 !important;
+}
+
+.button-full-large {
+  font-size: 18px !important;
+}
+
+.scroll-bar-indicator
+{
+  display: none;
+}
+
+.bar-footer {
+  height: 60px;
+}
+
+.has-footer {
+  bottom: 60px;
+}
+
+.calm-gray {
+  color: $calmGray;
+}
+
+.margin-top {
+  margin-top: 8px;
+}
+
+.item-input input {
+  padding-left: 8px;
+  padding-right: 8px;
+  border-bottom: 1px solid;
+}
+
+.button {
+  &.negative-v {
+	margin-bottom: -14px;
+	margin-top: -14px;
+  }
+
+  &.margin-right {
+	margin-right: 8px;
+  }
+
+  &.pull-right {
+	float: right;
+  }
 }

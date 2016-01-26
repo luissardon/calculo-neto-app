@@ -2,45 +2,62 @@
   <ion-content>
     <ion-list>
 
-      <ion-item class="item-divider">
+      <ion-item class="item-divider positive" ng-show="ctrl.getAmounts().grossAmount > 0">
         Ingresos
-        <span class="item-note">{{ctrl.getAmount().grossAmount | currency : "S/ " : 2}}</span>
+        <span class="item-note positive">{{ctrl.getAmounts().grossAmount | currency : "S/ " : 2}}</span>
       </ion-item>
 
-      <ion-item>
+      <ion-item ng-show="ctrl.getAmounts().baseAmount > 0">
         Sueldo Base
-        <span class="item-note positive item-note-lg">{{ctrl.getAmount().baseAmount | currency : "S/ " : 2}}</span>
+        <span class="item-note">{{ctrl.getAmounts().baseAmount | currency : "S/ " : 2}}</span>
       </ion-item>
 
-      <ion-item ng-show="ctrl.profile.hasAF">
+      <ion-item ng-show="ctrl.getProfile().hasAF">
         Asignación Familiar
-        <span class="item-note positive item-note-lg">{{ctrl.getAmount().AFAmount | currency : "S/ " : 2}}</span>
+        <span class="item-note">{{ctrl.getAmounts().AFAmount | currency : "S/ " : 2}}</span>
       </ion-item>
 
-      <ion-item class="item-divider">
+      <ion-item class="item-divider assertive" ng-show="ctrl.getAmounts().grossAmount > 0">
         Descuentos
-        <span class="item-note">{{ctrl.getAmount().discountAmount | currency : "- S/ " : 2}}</span>
+        <span class="item-note assertive">{{ctrl.getAmounts().discountAmount | currency : "- S/ " : 2}}</span>
       </ion-item>
 
-      <ion-item ng-show="ctrl.hasRetention">
+      <ion-item ng-show="ctrl.getAmounts().retentionAmount > 0">
         Retención de 5ta
-        <span class="item-note assertive item-note-lg">{{ctrl.getAmount().retentionAmount | currency : "- S/ " : 2}}</span>
+        <span class="item-note item-note-lg">{{ctrl.getAmounts().retentionAmount | currency : "- S/ " : 2}}</span>
+        <button ng-class="ctrl.showDetail ? 'ion-arrow-up-b' : 'ion-arrow-down-b'" ng-click="ctrl.toggleDetail()" class="button calm-gray button-icon pull-right negative-v margin-right"></button>
       </ion-item>
 
-      <ion-item>
+      <ion-item class="item-list" ng-show="ctrl.showDetail">
+        <ion-list>
+          <ion-item ng-repeat="retention in ctrl.retentions track by retention.id">
+            <label class="calm-gray">{{retention.name}}</label>
+            <span class="item-note">{{retention.retained | currency : "- S/ " : 2}}</span>
+          </ion-item>
+        </ion-list>
+      </ion-item>
+
+      <ion-item ng-show="ctrl.getAmounts().pensionAmount > 0">
         {{ctrl.pensions.current.name}}
-        <span class="item-note assertive item-note-lg">{{ctrl.getAmount().pensionAmount | currency : "- S/ " : 2}}</span>
+        <span class="item-note item-note-lg">{{ctrl.getAmounts().pensionAmount | currency : "- S/ " : 2}}</span>
       </ion-item>
 
-      <ion-item ng-show="ctrl.profile.hasEPS">
+      <ion-item ng-show="ctrl.getAmounts().EPSAmount > 0">
         Prima EPS
-        <span class="item-note assertive item-note-lg">{{ctrl.getAmount().EPSAmount | currency : "- S/ " : 2}}</span>
+        <span class="item-note item-note-lg">{{ctrl.getAmounts().EPSAmount | currency : "- S/ " : 2}}</span>
+      </ion-item>
+
+      <ion-item class="item-end text-center" ng-hide="ctrl.getAmounts().grossAmount > 0">
+        <label class="calm-gray">No tienes ningún Ingreso registrado.</label>
+        <br>
+        <button class="button button-icon icon ion-edit margin-top calm-gray" ng-click="ctrl.open('#/tab/profile')">
+        </button>
       </ion-item>
 
     </ion-list>
   </ion-content>
 
   <ion-footer-bar align-title="center" class="bar-balanced">
-    <h1 class="title">Sueldo Neto: <strong>{{ctrl.getAmount().netAmount | currency : "S/ " : 2}}</strong></h1>
+    <h1 class="title">Sueldo Neto: <strong>{{ctrl.getAmounts().netAmount | currency : "S/ " : 2}}</strong></h1>
   </ion-footer-bar>
 </ion-view>

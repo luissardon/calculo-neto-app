@@ -3,17 +3,23 @@
     <ion-list>
 
     <ion-item class="item-input item-stacked-label">
-        RMV
-        <span class="item-note item-note-left">{{ctrl.getAmount().RMVAmount | currency : "S/ " : 2}}</span>
-        <input class="positive" type="text" placeholder="Monto" ng-model="ctrl.getAmount().RMVAmount" maxlength="15">
+        Remuneracion Mínima Vital
+        <span class="item-note">{{ctrl.getAmounts().RMVAmount | currency : "S/ " : 2}}</span>
+        <input class="positive" type="number" placeholder="Monto" ng-model="ctrl.getAmounts().RMVAmount" maxlength="15">
     </ion-item>
 
     <ion-item class="item-input item-stacked-label">
-        UIT
-        <span class="item-note item-note-left">{{ctrl.getAmount().UITAmount | currency : "S/ " : 2}}</span>
-        <input class="positive" type="text" placeholder="Monto" ng-model="ctrl.getAmount().UITAmount" maxlength="15">
+        Unidad Impositiva Tributaria
+        <span class="item-note">{{ctrl.getAmounts().UITAmount | currency : "S/ " : 2}}</span>
+        <input class="positive" type="number" placeholder="Monto" ng-model="ctrl.getAmounts().UITAmount" maxlength="15">
     </ion-item>
 
     </ion-list>
   </ion-content>
+
+  <ion-footer-bar class="bar-balanced no-padding">
+    <button class="button button-full button-balanced button-full-large no-margin" ng-click="ctrl.open('#/tab/salary')">
+      Calcular Salario
+    </button>
+  </ion-footer-bar>
 </ion-view>

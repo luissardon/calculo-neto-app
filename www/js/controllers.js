@@ -1,6 +1,6 @@
 angular.module('starter.controllers', [])
 
-    .controller('ProfileCtrl', function($scope, Profile, Amounts, Pensions) {
+    .controller('ProfileCtrl', function($scope, $window, Profile, Amounts, Pensions) {
         // With the new view caching in Ionic, Controllers are only called
         // when they are recreated or on app start, instead of every page change.
         // To listen for when this page is active (for example, to refresh data),
@@ -9,17 +9,43 @@ angular.module('starter.controllers', [])
         // });
         //
 
-        this.profile = Profile;
-        this.getAmount = Amounts.getAmount;
         this.pensions = Pensions;
+        this.getProfile = Profile.getData;
+        this.getAmounts = Amounts.getData;
+
+        this.open = function (url) {
+            $window.location.href = url;
+        }
     })
 
-    .controller('SalaryCtrl', function($scope, Profile, Amounts, Pensions) {
-        this.profile = Profile;
-        this.getAmount = Amounts.getAmount;
+    .controller('SalaryCtrl', function($scope, $window, Profile, Amounts, Pensions, Retentions) {
+        var that = this;
+
+        this.showDetail = false;
+        this.retentions = [];
+
         this.pensions = Pensions;
+        this.getProfile = Profile.getData;
+        this.getAmounts = Amounts.getData;
+        this.getRetentions = Retentions.getData;
+
+        this.open = function (url) {
+            $window.location.href = url;
+        }
+
+        this.toggleDetail = function () {
+            that.showDetail = !that.showDetail;
+        }
+
+        $scope.$on('$ionicView.enter', function(e) {
+            that.retentions = Retentions.getData().all;
+        });
     })
 
-    .controller('ConfigCtrl', function($scope, Amounts) {
-        this.getAmount = Amounts.getAmount;
+    .controller('ConfigCtrl', function($scope, $window, Amounts) {
+        this.getAmounts = Amounts.getData;
+
+        this.open = function (url) {
+            $window.location.href = url;
+        }
     });
