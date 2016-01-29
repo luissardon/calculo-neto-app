@@ -9,7 +9,7 @@ angular.module('starter.controllers', [])
         // });
         //
 
-        this.pensions = Pensions;
+        this.getPensions = Pensions.getData;
         this.getProfile = Profile.getData;
         this.getAmounts = Amounts.getData;
 
@@ -24,7 +24,7 @@ angular.module('starter.controllers', [])
         this.showDetail = false;
         this.retentions = [];
 
-        this.pensions = Pensions;
+        this.getPensions = Pensions.getData;
         this.getProfile = Profile.getData;
         this.getAmounts = Amounts.getData;
         this.getRetentions = Retentions.getData;

@@ -38,7 +38,7 @@
       </ion-item>
 
       <ion-item ng-show="ctrl.getAmounts().pensionAmount > 0">
-        {{ctrl.pensions.current.name}}
+        {{ctrl.getPensions().selected.name}}
         <span class="item-note item-note-lg">{{ctrl.getAmounts().pensionAmount | currency : "- S/ " : 2}}</span>
       </ion-item>
 

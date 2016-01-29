@@ -1,11 +1,28 @@
 angular.module('starter.services', [])
 
-    .factory('Profile', function() {
+    .factory('$localstorage', function($window) {
+        return {
+            set: function(key, value) {
+                $window.localStorage[key] = value;
+            },
+            get: function(key, defaultValue) {
+                return $window.localStorage[key] || defaultValue;
+            },
+            setObject: function(key, value) {
+                $window.localStorage[key] = JSON.stringify(value);
+            },
+            getObject: function(key) {
+                return JSON.parse($window.localStorage[key] || '{}');
+            }
+        }
+    })
+
+    .factory('Profile', function($localstorage) {
+
         var config = {
-            hasAF                       : false,
-            hasEPS                      : false,
-            hasAFP                      : false,
-            insuranceContributionRate   : 9,
+            hasAF                       : $localstorage.get('hasAF', false) === "true",
+            hasEPS                      : $localstorage.get('hasEPS', false) === "true",
+            insuranceContributionRate   : Number($localstorage.get('insuranceContributionRate', 9)),
         };
 
         return {
@@ -13,12 +30,16 @@ angular.module('starter.services', [])
                 if(config.hasEPS)
                     config.insuranceContributionRate = 6.75;
 
+                $localstorage.set('hasAF', config.hasAF);
+                $localstorage.set('hasEPS', config.hasEPS);
+                $localstorage.set('insuranceContributionRate', config.insuranceContributionRate);
+
                 return config;
             }
         };
     })
 
-    .factory('Retentions', function(Profile) {
+    .factory('Retentions', function($localstorage, Profile) {
         var retentions = [
             {
                 id          : "0",
@@ -62,7 +83,7 @@ angular.module('starter.services', [])
             }
         ];
 
-        var totalRetentionAmount = 0;
+        var totalRetentionAmount = $localstorage.get('totalRetentionAmount', 0);
 
         return {
             getData : function (anualGrossAmount, UITAmount) {
@@ -95,6 +116,8 @@ angular.module('starter.services', [])
 
                 Profile.getData().hasRetention = totalRetentionAmount > 0;
 
+                $localstorage.set('totalRetentionAmount', totalRetentionAmount);
+
                 return {
                     all : retentions,
                     discount : totalRetentionAmount
@@ -103,12 +126,12 @@ angular.module('starter.services', [])
         };
     })
 
-    .factory('Amounts', function(Profile, Retentions, Pensions) {
+    .factory('Amounts', function($localstorage, Profile, Retentions, Pensions) {
         var amounts = {
-            UITAmount       : 3950,
-            RMVAmount       : 750,
+            UITAmount       : Number($localstorage.get('UITAmount', 3950)),
+            RMVAmount       : Number($localstorage.get('RMVAmount', 750)),
 
-            baseAmount      : 0,
+            baseAmount      : Number($localstorage.get('baseAmount', 0)),
             AFAmount        : 0,
             grossAmount     : 0,
             pensionAmount   : 0,
@@ -125,52 +148,64 @@ angular.module('starter.services', [])
                 amounts.anualGrossAmount        = amounts.grossAmount * 14 + amounts.extraBonusAmount * 2;
                 amounts.anualRetentionAmount    = Retentions.getData(amounts.anualGrossAmount, amounts.UITAmount).discount;
                 amounts.retentionAmount         = amounts.anualRetentionAmount / 12;
-                amounts.pensionAmount           = amounts.grossAmount / 100 * Pensions.current.value;
+                amounts.pensionAmount           = amounts.grossAmount / 100 * Pensions.getData().selected.value;
                 amounts.EPSAmount               = Profile.getData().hasEPS ? amounts.EPSAmount : 0;
                 amounts.discountAmount          = amounts.retentionAmount + amounts.pensionAmount + amounts.EPSAmount;
                 amounts.netAmount               = amounts.grossAmount - amounts.discountAmount;
 
                 amounts.netAmount               = amounts.netAmount < 0 ? 0 : amounts.netAmount;
 
+                $localstorage.set('UITAmount', amounts.UITAmount);
+                $localstorage.set('RMVAmount', amounts.RMVAmount);
+                $localstorage.set('baseAmount', amounts.baseAmount);
+
                 return amounts;
             }
         };
     })
 
-    .factory('Pensions', function() {
-        var pensions = [
-            {
-                id      : "0",
-                name    : "AFP Habitad 12.80%",
-                value   : 12.80,
-            },
-            {
-                id      : "1",
-                name    : "Profuturo AFP 13.02%",
-                value   : 13.02,
-            },
-            {
-                id      : "2",
-                name    : "Prima AFP 12.93%",
-                value   : 12.93,
-            },
-            {
-                id      : "3",
-                name    : "AFP Integra 12.88%",
-                value   : 12.88,
-            },
-            {
-                id      : "2",
-                name    : "ONP 13%",
-                value   : 13,
-            }
-        ]
+    .factory('Pensions', function($localstorage) {
+        var pensions = {
+            all : [
+                {
+                    id      : "0",
+                    name    : "AFP Habitad 12.80%",
+                    value   : 12.80,
+                },
+                {
+                    id      : "1",
+                    name    : "Profuturo AFP 13.02%",
+                    value   : 13.02,
+                },
+                {
+                    id      : "2",
+                    name    : "Prima AFP 12.93%",
+                    value   : 12.93,
+                },
+                {
+                    id      : "3",
+                    name    : "AFP Integra 12.88%",
+                    value   : 12.88,
+                },
+                {
+                    id      : "4",
+                    name    : "ONP 13%",
+                    value   : 13,
+                }
+            ]
+        }
 
-        var selectedPension = pensions[0]
+        console.log($localstorage.get('selectedPensionIndex', 0));
+        pensions.selected = pensions.all[Number($localstorage.get('selectedPensionIndex', 0))]
+        console.log('selected',pensions.selected);
 
         return {
-            all : pensions,
-            current : selectedPension
+            getData : function () {
+                console.log(pensions.selected.id);
+                $localstorage.set('selectedPensionIndex', pensions.selected.id);
+
+                return pensions;
+            }
         }
     })
 

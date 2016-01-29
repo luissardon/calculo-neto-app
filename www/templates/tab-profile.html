@@ -20,7 +20,7 @@
 
       <ion-item class="item-select">
         Pensión
-        <select ng-options="pension.name for pension in ctrl.pensions.all track by pension.id" ng-model="ctrl.pensions.current">
+        <select ng-options="pension.name for pension in ctrl.getPensions().all track by pension.id" ng-model="ctrl.getPensions().selected">
         </select>
       </ion-item>
 
