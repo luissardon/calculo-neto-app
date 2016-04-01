@@ -133,3 +133,15 @@ input[type="number"].positive, input[type="text"].positive {
 	float: right;
   }
 }
+
+.bar.bar-balanced.bar-footer {
+    background-image: linear-gradient(180deg, #28a54c, #28a54c 50%, transparent 50%);
+
+    .button {
+        background-color: transparent !important;
+    }
+}
+
+.button.button-balanced {
+    background-color: transparent;
+}

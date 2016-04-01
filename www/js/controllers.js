@@ -15,7 +15,7 @@ angular.module('starter.controllers', [])
 
         this.open = function (url) {
             $window.location.href = url;
-        }
+        };
     })
 
     .controller('SalaryCtrl', function($scope, $window, Profile, Amounts, Pensions, Retentions) {
@@ -31,11 +31,11 @@ angular.module('starter.controllers', [])
 
         this.open = function (url) {
             $window.location.href = url;
-        }
+        };
 
         this.toggleDetail = function () {
             that.showDetail = !that.showDetail;
-        }
+        };
 
         $scope.$on('$ionicView.enter', function(e) {
             that.retentions = Retentions.getData().all;
@@ -47,5 +47,5 @@ angular.module('starter.controllers', [])
 
         this.open = function (url) {
             $window.location.href = url;
-        }
+        };
     });

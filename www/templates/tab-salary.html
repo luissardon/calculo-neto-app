@@ -4,7 +4,9 @@
 
       <ion-item class="item-divider positive" ng-show="ctrl.getAmounts().grossAmount > 0">
         Ingresos
-        <span class="item-note positive">{{ctrl.getAmounts().grossAmount | currency : "S/ " : 2}}</span>
+        <span class="item-note positive">
+          {{ctrl.getAmounts().grossAmount | currency : "S/ " : 2}}
+        </span>
       </ion-item>
 
       <ion-item ng-show="ctrl.getAmounts().baseAmount > 0">
@@ -54,10 +56,30 @@
         </button>
       </ion-item>
 
+      <ion-item class="item-divider balanced" ng-show="ctrl.getAmounts().grossAmount > 0">
+        Gratificación
+        <span class="item-note balanced">
+          {{ctrl.getAmounts().gratiAmount | currency : "S/ " : 2}}
+        </span>
+      </ion-item>
+
+      <ion-item ng-show="ctrl.getAmounts().baseAmount > 0">
+        Sueldo Bruto
+        <span class="item-note">{{ctrl.getAmounts().gratiBaseAmount | currency : "S/ " : 2}}</span>
+      </ion-item>
+
+      <ion-item ng-show="ctrl.getProfile().hasAF">
+        Bonificación Extraordinaria
+        <span class="item-note">{{ctrl.getAmounts().extraBonusAmount | currency : "S/ " : 2}}</span>
+      </ion-item>
+
     </ion-list>
   </ion-content>
 
-  <ion-footer-bar align-title="center" class="bar-balanced">
-    <h1 class="title">Sueldo Neto: <strong>{{ctrl.getAmounts().netAmount | currency : "S/ " : 2}}</strong></h1>
+  <ion-footer-bar align-title="center" class="bar-balanced no-padding">
+    <h1 class="title">
+      Sueldo Neto:
+      <strong>{{ctrl.getAmounts().netAmount | currency : "S/ " : 2}}</strong>
+    </h1>
   </ion-footer-bar>
 </ion-view>

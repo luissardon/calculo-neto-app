@@ -14,7 +14,7 @@ angular.module('starter.services', [])
             getObject: function(key) {
                 return JSON.parse($window.localStorage[key] || '{}');
             }
-        }
+        };
     })
 
     .factory('Profile', function($localstorage) {
@@ -23,12 +23,17 @@ angular.module('starter.services', [])
             hasAF                       : $localstorage.get('hasAF', false) === "true",
             hasEPS                      : $localstorage.get('hasEPS', false) === "true",
             insuranceContributionRate   : Number($localstorage.get('insuranceContributionRate', 9)),
+            EPSAmount                   : 0
         };
 
         return {
             getData : function() {
+                config.EPSAmount = Number($localstorage.get('EPSAmount', 0));
+
                 if(config.hasEPS)
                     config.insuranceContributionRate = 6.75;
+                else
+                    config.EPSAmount = 0;
 
                 $localstorage.set('hasAF', config.hasAF);
                 $localstorage.set('hasEPS', config.hasEPS);
@@ -121,7 +126,7 @@ angular.module('starter.services', [])
                 return {
                     all : retentions,
                     discount : totalRetentionAmount
-                }
+                };
             }
         };
     })
@@ -134,6 +139,9 @@ angular.module('starter.services', [])
             baseAmount      : Number($localstorage.get('baseAmount', 0)),
             AFAmount        : 0,
             grossAmount     : 0,
+            gratiAmount     : 0,
+            gratiBaseAmount : 0,
+            extraBonusAmount: 0,
             pensionAmount   : 0,
             EPSAmount       : 0,
             discountAmount  : 0,
@@ -145,11 +153,12 @@ angular.module('starter.services', [])
                 amounts.AFAmount                = Profile.getData().hasAF ? amounts.RMVAmount / 100 * 10 : 0;
                 amounts.grossAmount             = amounts.baseAmount + amounts.AFAmount;
                 amounts.extraBonusAmount        = amounts.grossAmount / 100 * Profile.getData().insuranceContributionRate;
-                amounts.anualGrossAmount        = amounts.grossAmount * 14 + amounts.extraBonusAmount * 2;
+                amounts.gratiBaseAmount         = amounts.grossAmount;
+                amounts.gratiAmount             = amounts.gratiBaseAmount + amounts.extraBonusAmount;
+                amounts.anualGrossAmount        = amounts.grossAmount * 12 + amounts.gratiAmount * 2;
                 amounts.anualRetentionAmount    = Retentions.getData(amounts.anualGrossAmount, amounts.UITAmount).discount;
                 amounts.retentionAmount         = amounts.anualRetentionAmount / 12;
                 amounts.pensionAmount           = amounts.grossAmount / 100 * Pensions.getData().selected.value;
-                amounts.EPSAmount               = Profile.getData().hasEPS ? amounts.EPSAmount : 0;
                 amounts.discountAmount          = amounts.retentionAmount + amounts.pensionAmount + amounts.EPSAmount;
                 amounts.netAmount               = amounts.grossAmount - amounts.discountAmount;
 
@@ -158,6 +167,24 @@ angular.module('starter.services', [])
                 $localstorage.set('UITAmount', amounts.UITAmount);
                 $localstorage.set('RMVAmount', amounts.RMVAmount);
                 $localstorage.set('baseAmount', amounts.baseAmount);
+
+                console.log(Profile.getData().hasEPS, Profile.getData().EPSAmount);
+
+                if(Profile.getData().hasEPS) {
+                  if(amounts.EPSAmount === 0 || isNaN(amounts.EPSAmount)) {
+                    if(Profile.getData().EPSAmount !== 0 && !isNaN(Profile.getData().EPSAmount)) {
+                      amounts.EPSAmount = Profile.getData().EPSAmount;
+                      $localstorage.set('EPSAmount', amounts.EPSAmount);
+                    } else {
+                      amounts.EPSAmount = 0;
+                    }
+                  } else {
+                    console.log("no EPS isn't 0");
+                    $localstorage.set('EPSAmount', amounts.EPSAmount);
+                  }
+                } else {
+                  amounts.EPSAmount = 0;
+                }
 
                 return amounts;
             }
@@ -193,19 +220,15 @@ angular.module('starter.services', [])
                     value   : 13,
                 }
             ]
-        }
+        };
 
-        console.log($localstorage.get('selectedPensionIndex', 0));
-        pensions.selected = pensions.all[Number($localstorage.get('selectedPensionIndex', 0))]
-        console.log('selected',pensions.selected);
+        pensions.selected = pensions.all[Number($localstorage.get('selectedPensionIndex', 0))];
 
         return {
             getData : function () {
-                console.log(pensions.selected.id);
                 $localstorage.set('selectedPensionIndex', pensions.selected.id);
 
                 return pensions;
             }
-        }
-    })
-
+        };
+    });
